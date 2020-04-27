@@ -21,8 +21,9 @@ let UserController = class UserController {
     register(user) {
         return user_1.User.save(user);
     }
-    delete(id, user) {
-        return user_1.User.delete(user[id]);
+    delete(id, response) {
+        user_1.User.delete(id);
+        return response.sendStatus(200);
     }
 };
 __decorate([
@@ -40,9 +41,9 @@ __decorate([
 ], UserController.prototype, "register", null);
 __decorate([
     routing_controllers_1.Delete('/delete'),
-    __param(0, routing_controllers_1.Body()),
+    __param(0, routing_controllers_1.QueryParam('id')), __param(1, routing_controllers_1.Res()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, user_1.User]),
+    __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "delete", null);
 UserController = __decorate([

@@ -6,4 +6,6 @@ export declare class User extends BaseEntity {
     firstname: string;
     lastname: string;
     email: string;
+    hashPassword(): void;
+    checkIfUnencryptedPasswordIsValid(unencryptedPassword: string): boolean;
 }

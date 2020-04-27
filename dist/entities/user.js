@@ -8,9 +8,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
+const bcrypt = __importStar(require("bcryptjs"));
 let User = class User extends typeorm_1.BaseEntity {
+    hashPassword() {
+        this.password = bcrypt.hashSync(this.password, 8);
+    }
+    checkIfUnencryptedPasswordIsValid(unencryptedPassword) {
+        return bcrypt.compareSync(unencryptedPassword, this.password);
+    }
 };
 __decorate([
     typeorm_1.Column('bigint', {
@@ -34,7 +48,7 @@ __decorate([
     typeorm_1.Column('varchar', {
         name: 'MSM_USR_PASSWORD',
         nullable: false,
-        length: 50,
+        length: 250,
     }),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);

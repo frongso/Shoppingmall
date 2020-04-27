@@ -1,4 +1,5 @@
 import { Entity, Column, BaseEntity } from 'typeorm';
+import * as bcrypt from 'bcryptjs';
 
 @Entity({
   name: 'msm_user',
@@ -24,7 +25,7 @@ export class User extends BaseEntity {
   @Column('varchar', {
     name: 'MSM_USR_PASSWORD',
     nullable: false,
-    length: 50,
+    length: 250,
   })
   password: string;
 
@@ -48,4 +49,12 @@ export class User extends BaseEntity {
     length: 50,
   })
   email: string;
+
+  hashPassword() {
+    this.password = bcrypt.hashSync(this.password, 8);
+  }
+
+  checkIfUnencryptedPasswordIsValid(unencryptedPassword: string) {
+    return bcrypt.compareSync(unencryptedPassword, this.password);
+  }
 }

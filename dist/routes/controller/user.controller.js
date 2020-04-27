@@ -11,18 +11,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const role_1 = require("./../entities/role");
+const user_1 = require("../../entities/user");
 const routing_controllers_1 = require("routing-controllers");
-let RoleController = class RoleController {
-    getall() {
-        return role_1.Role.find();
+const bcrypt = __importStar(require("bcryptjs"));
+let UserController = class UserController {
+    getAll() {
+        return user_1.User.find();
     }
-    generate(role) {
-        return role_1.Role.save(role);
+    register(user) {
+        const hashPassword = bcrypt.hashSync(user.password);
+        user.password = hashPassword;
+        return user_1.User.save(user);
     }
     delete(id, response) {
-        role_1.Role.delete(id);
+        user_1.User.delete(id);
         return response.sendStatus(200);
     }
 };
@@ -31,23 +41,23 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], RoleController.prototype, "getall", null);
+], UserController.prototype, "getAll", null);
 __decorate([
-    routing_controllers_1.Post('/generate'),
+    routing_controllers_1.Post('/register'),
     __param(0, routing_controllers_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [role_1.Role]),
+    __metadata("design:paramtypes", [user_1.User]),
     __metadata("design:returntype", void 0)
-], RoleController.prototype, "generate", null);
+], UserController.prototype, "register", null);
 __decorate([
     routing_controllers_1.Delete('/delete'),
     __param(0, routing_controllers_1.QueryParam('id')), __param(1, routing_controllers_1.Res()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", void 0)
-], RoleController.prototype, "delete", null);
-RoleController = __decorate([
-    routing_controllers_1.JsonController('/role')
-], RoleController);
-exports.RoleController = RoleController;
-//# sourceMappingURL=role.controlller.js.map
+], UserController.prototype, "delete", null);
+UserController = __decorate([
+    routing_controllers_1.JsonController('/user')
+], UserController);
+exports.UserController = UserController;
+//# sourceMappingURL=user.controller.js.map

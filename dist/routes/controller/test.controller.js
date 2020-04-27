@@ -9,30 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const typeorm_1 = require("typeorm");
-let Role = class Role extends typeorm_1.BaseEntity {
+const routing_controllers_1 = require("routing-controllers");
+let TestController = class TestController {
+    hello() {
+        return 'hello world';
+    }
 };
 __decorate([
-    typeorm_1.Column('bigint', {
-        name: 'MSM_ROLE_ID',
-        primary: true,
-        nullable: false,
-        width: 22,
-    }),
-    __metadata("design:type", Number)
-], Role.prototype, "id", void 0);
-__decorate([
-    typeorm_1.Column('varchar', {
-        name: 'MSM_ROLE_NAME',
-        nullable: false,
-    }),
-    __metadata("design:type", String)
-], Role.prototype, "name", void 0);
-Role = __decorate([
-    typeorm_1.Entity({
-        name: 'msm_role',
-        schema: 'shopping_mall',
-    })
-], Role);
-exports.Role = Role;
-//# sourceMappingURL=role.js.map
+    routing_controllers_1.Get('/'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], TestController.prototype, "hello", null);
+TestController = __decorate([
+    routing_controllers_1.Controller()
+], TestController);
+exports.TestController = TestController;
+//# sourceMappingURL=test.controller.js.map

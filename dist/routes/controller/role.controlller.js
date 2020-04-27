@@ -12,7 +12,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const role_1 = require("./../entities/role");
+const role_1 = require("../../entities/role");
 const routing_controllers_1 = require("routing-controllers");
 let RoleController = class RoleController {
     getall() {
