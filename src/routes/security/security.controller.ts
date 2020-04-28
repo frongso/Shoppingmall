@@ -8,7 +8,6 @@ import * as config from '../../config/server';
 @JsonController()
 export class SecurityController {
   @Post('/login')
-  // ทำไมต้องมี async
   async login(@Res() response: Response, @Body() credential: { username: string; password: string }) {
     // Check if username and password are set
     const username = credential.username;
