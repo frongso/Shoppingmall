@@ -1,12 +1,24 @@
 import { ExpressMiddlewareInterface, Middleware } from 'routing-controllers';
 import * as jwt from 'jsonwebtoken';
 import * as config from '../../config/server';
+import { Request } from 'express';
 
 @Middleware({ type: 'before' })
 export class CheckJwtMiddleware implements ExpressMiddlewareInterface {
   use(request: Request, response: any, next: (err?: any) => any) {
+    if (request.url === '/service/login' && request.method === 'POST') {
+      return next();
+    }
     // Get the jwt token from the head does it work ?
-    const token = request.headers.authorization;
+    let token = request.get(config.tokenHeader);
+
+    if (!token.startsWith('Bearer')) {
+      // Reject if there is no Bearer in the token
+      return response.status(401).send('Token is invalid');
+    }
+
+    // Remove Bearer from string
+    token = token.slice(7, token.length);
 
     // Try to validate the token and get data
     try {
@@ -26,6 +38,6 @@ export class CheckJwtMiddleware implements ExpressMiddlewareInterface {
     response.setHeader('token', newToken);
 
     // go next to controller
-    next();
+    return next();
   }
 }
