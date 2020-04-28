@@ -1,4 +1,5 @@
 "use strict";
+// import { BaseEntity, Entity, Column } from 'typeorm';
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -9,6 +10,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// @Entity('msm_role', { schema: 'shopping_mall' })
+// export class Role extends BaseEntity {
+//   @Column('bigint', {
+//     primary: true,
+//     name: 'MSM_ROLE_ID',
+//     generated: true,
+//     width: 22,
+//   })
+//   id: number;
+//   @Column('varchar', { name: 'MSM_ROLE_NAME', nullable: false, length: 50 })
+//   roleName: string;
+// }
 const typeorm_1 = require("typeorm");
 let Role = class Role extends typeorm_1.BaseEntity {
 };

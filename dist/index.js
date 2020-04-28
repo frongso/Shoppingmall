@@ -11,11 +11,12 @@ const test_controller_1 = require("./routes/controller/test.controller");
 const typeorm_1 = require("typeorm");
 const role_controlller_1 = require("./routes/controller/role.controlller");
 const server_1 = require("./config/server");
-// import { SecurityController } from './routes/security/security.controller';
+const security_controller_1 = require("./routes/security/security.controller");
+// import { CheckJwtMiddleware } from './routes/middleware/checkJwt.middleware';
 typeorm_1.createConnection()
     .then((connection) => {
     const app = routing_controllers_1.createExpressServer({
-        controllers: [test_controller_1.TestController, user_controller_1.UserController, role_controlller_1.RoleController],
+        controllers: [test_controller_1.TestController, user_controller_1.UserController, role_controlller_1.RoleController, security_controller_1.SecurityController],
         middlewares: [log_middleware_1.LogMiddleware],
         routePrefix: '/service',
     });

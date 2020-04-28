@@ -1,4 +1,7 @@
-import { Response, Request } from 'express';
+import { Response } from 'express';
 export declare class SecurityController {
-    login(response: Response, request: Request): Promise<Response<any>>;
+    login(response: Response, credential: {
+        username: string;
+        password: string;
+    }): Promise<Response<any>>;
 }

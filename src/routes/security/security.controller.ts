@@ -1,6 +1,6 @@
 import { User } from './../../entities/user';
-import { JsonController, Post, Req, Res } from 'routing-controllers';
-import { Response, Request } from 'express';
+import { JsonController, Post, Res, Body } from 'routing-controllers';
+import { Response } from 'express';
 import { getRepository } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
 import * as config from '../../config/server';
@@ -9,10 +9,10 @@ import * as config from '../../config/server';
 export class SecurityController {
   @Post('/login')
   // ทำไมต้องมี async
-  async login(@Res() response: Response, @Req() request: Request) {
+  async login(@Res() response: Response, @Body() credential: { username: string; password: string }) {
     // Check if username and password are set
-    const username = request.body.username;
-    const password = request.body.password;
+    const username = credential.username;
+    const password = credential.password;
     if (!(username && password)) {
       return response.sendStatus(400);
     }
@@ -32,7 +32,7 @@ export class SecurityController {
       return;
     }
 
-    // Sing JWT, valid for 1 hour
+    // Sign JWT, valid for 15 min
     const token = jwt.sign({ userId: user.id, username: user.username }, config.secretKey, { expiresIn: config.tokenLife });
 
     // Send the jwt in the response

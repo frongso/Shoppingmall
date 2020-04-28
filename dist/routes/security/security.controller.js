@@ -34,11 +34,11 @@ const typeorm_1 = require("typeorm");
 const jwt = __importStar(require("jsonwebtoken"));
 const config = __importStar(require("../../config/server"));
 let SecurityController = class SecurityController {
-    login(response, request) {
+    login(response, credential) {
         return __awaiter(this, void 0, void 0, function* () {
             // Check if username and password are set
-            const username = request.body.username;
-            const password = request.body.password;
+            const username = credential.username;
+            const password = credential.password;
             if (!(username && password)) {
                 return response.sendStatus(400);
             }
@@ -56,7 +56,7 @@ let SecurityController = class SecurityController {
                 response.sendStatus(401);
                 return;
             }
-            // Sing JWT, valid for 1 hour
+            // Sign JWT, valid for 15 min
             const token = jwt.sign({ userId: user.id, username: user.username }, config.secretKey, { expiresIn: config.tokenLife });
             // Send the jwt in the response
             response.send(token);
@@ -65,7 +65,7 @@ let SecurityController = class SecurityController {
 };
 __decorate([
     routing_controllers_1.Post('/login'),
-    __param(0, routing_controllers_1.Res()), __param(1, routing_controllers_1.Req()),
+    __param(0, routing_controllers_1.Res()), __param(1, routing_controllers_1.Body()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
