@@ -9,31 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const role_1 = require("./role");
+const user_1 = require("./user");
 const typeorm_1 = require("typeorm");
-// import { RoleMapUser } from './rsm_role_map_use';
-let Role = class Role extends typeorm_1.BaseEntity {
+let RoleMapUser = class RoleMapUser extends typeorm_1.BaseEntity {
 };
 __decorate([
     typeorm_1.Column('bigint', {
-        name: 'MSM_ROLE_ID',
         primary: true,
+        name: 'RSM_RMU_ID',
         nullable: false,
         width: 22,
     }),
     __metadata("design:type", Number)
-], Role.prototype, "id", void 0);
+], RoleMapUser.prototype, "rumid", void 0);
 __decorate([
-    typeorm_1.Column('varchar', {
-        name: 'MSM_ROLE_NAME',
-        nullable: false,
-    }),
-    __metadata("design:type", String)
-], Role.prototype, "name", void 0);
-Role = __decorate([
-    typeorm_1.Entity({
-        name: 'msm_role',
-        schema: 'shopping_mall',
-    })
-], Role);
-exports.Role = Role;
-//# sourceMappingURL=role.js.map
+    typeorm_1.OneToOne((type) => user_1.User),
+    typeorm_1.JoinColumn({ name: 'MSM_USER_ID' }),
+    __metadata("design:type", Number)
+], RoleMapUser.prototype, "userid", void 0);
+__decorate([
+    typeorm_1.OneToOne((type) => role_1.Role),
+    typeorm_1.JoinColumn({ name: 'MSM_USER_ID' }),
+    __metadata("design:type", Number)
+], RoleMapUser.prototype, "roleid", void 0);
+RoleMapUser = __decorate([
+    typeorm_1.Entity('rsm_role_map_user', { schema: 'shopping_mall' })
+], RoleMapUser);
+exports.RoleMapUser = RoleMapUser;
+//# sourceMappingURL=rsm_role_map_use.js.map

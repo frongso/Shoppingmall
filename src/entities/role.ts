@@ -1,20 +1,5 @@
-// import { BaseEntity, Entity, Column } from 'typeorm';
-
-// @Entity('msm_role', { schema: 'shopping_mall' })
-// export class Role extends BaseEntity {
-//   @Column('bigint', {
-//     primary: true,
-//     name: 'MSM_ROLE_ID',
-//     generated: true,
-//     width: 22,
-//   })
-//   id: number;
-
-//   @Column('varchar', { name: 'MSM_ROLE_NAME', nullable: false, length: 50 })
-//   roleName: string;
-// }
-
-import { Entity, BaseEntity, Column } from 'typeorm';
+import { Entity, BaseEntity, Column, JoinTable, OneToMany } from 'typeorm';
+// import { RoleMapUser } from './rsm_role_map_use';
 
 @Entity({
   name: 'msm_role',
@@ -33,4 +18,8 @@ export class Role extends BaseEntity {
     nullable: false,
   })
   name: string;
+
+  // @OneToMany(() => RoleMapUser, (roleid) => roleid.role)
+  // @JoinTable()
+  // classes: RoleMapUser[];
 }

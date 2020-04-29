@@ -1,42 +1,6 @@
-// import { BaseEntity, Column, Entity } from 'typeorm';
-// import * as bcrypt from 'bcryptjs';
-
-// @Entity('msm_user', { schema: 'shopping_mall' })
-// export class User extends BaseEntity {
-//   @Column('bigint', {
-//     primary: true,
-//     name: 'MSM_USER_ID',
-//     generated: true,
-//     width: 22,
-//   })
-//   id: number;
-
-//   @Column('varchar', { name: 'MSM_USERNAME', unique: true, nullable: false })
-//   username: string;
-
-//   @Column('varchar', { name: 'MSM_PASSWORD', nullable: false })
-//   password: string;
-
-//   @Column('varchar', { name: 'MSM_USR_FIRST_NAME', nullable: false })
-//   firstName: string;
-
-//   @Column('varchar', { name: 'MSM_USR_LAST_NAME', nullable: false })
-//   lastName: string;
-
-//   @Column('varchar', { name: 'MSM_USR_EMAIL', nullable: true })
-//   email: string;
-
-//   hashPassword() {
-//     this.password = bcrypt.hashSync(this.password, 8);
-//   }
-
-//   checkIfUnencryptedPasswordIsValid(unencryptedPassword: string) {
-//     return bcrypt.compareSync(unencryptedPassword, this.password);
-//   }
-// }
-
-import { Entity, Column, BaseEntity } from 'typeorm';
+import { Entity, Column, BaseEntity, ManyToMany, JoinTable, ManyToOne } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+// import { RoleMapUser } from './rsm_role_map_use';
 
 @Entity({
   name: 'msm_user',
@@ -86,6 +50,11 @@ export class User extends BaseEntity {
     length: 50,
   })
   email: string;
+
+  // // Dose it work ?
+  // @ManyToOne(() => RoleMapUser, (userid) => userid.user)
+  // @JoinTable()
+  // classes: RoleMapUser[];
 
   hashPassword() {
     this.password = bcrypt.hashSync(this.password, 8);
