@@ -1,5 +1,5 @@
 import { Entity, BaseEntity, Column, JoinTable, OneToMany } from 'typeorm';
-// import { RoleMapUser } from './rsm_role_map_use';
+import { RoleMapUser } from './rsm_role_map_use';
 
 @Entity({
   name: 'msm_role',
@@ -19,7 +19,7 @@ export class Role extends BaseEntity {
   })
   name: string;
 
-  // @OneToMany(() => RoleMapUser, (roleid) => roleid.role)
-  // @JoinTable()
-  // classes: RoleMapUser[];
+  @OneToMany((type) => RoleMapUser, (rolemapuser) => rolemapuser.role)
+  @JoinTable()
+  rolemapuser: RoleMapUser;
 }

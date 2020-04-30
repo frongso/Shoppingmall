@@ -18,12 +18,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const bcrypt = __importStar(require("bcryptjs"));
-// import { RoleMapUser } from './rsm_role_map_use';
+const rsm_role_map_use_1 = require("./rsm_role_map_use");
 let User = class User extends typeorm_1.BaseEntity {
-    // // Dose it work ?
-    // @ManyToOne(() => RoleMapUser, (userid) => userid.user)
-    // @JoinTable()
-    // classes: RoleMapUser[];
     hashPassword() {
         this.password = bcrypt.hashSync(this.password, 8);
     }
@@ -81,6 +77,11 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
+__decorate([
+    typeorm_1.OneToMany((type) => rsm_role_map_use_1.RoleMapUser, (rolemapuser) => rolemapuser.user),
+    typeorm_1.JoinTable(),
+    __metadata("design:type", rsm_role_map_use_1.RoleMapUser)
+], User.prototype, "rolemapuser", void 0);
 User = __decorate([
     typeorm_1.Entity({
         name: 'msm_user',

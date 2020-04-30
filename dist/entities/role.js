@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
-// import { RoleMapUser } from './rsm_role_map_use';
+const rsm_role_map_use_1 = require("./rsm_role_map_use");
 let Role = class Role extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -29,6 +29,11 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Role.prototype, "name", void 0);
+__decorate([
+    typeorm_1.OneToMany((type) => rsm_role_map_use_1.RoleMapUser, (rolemapuser) => rolemapuser.role),
+    typeorm_1.JoinTable(),
+    __metadata("design:type", rsm_role_map_use_1.RoleMapUser)
+], Role.prototype, "rolemapuser", void 0);
 Role = __decorate([
     typeorm_1.Entity({
         name: 'msm_role',

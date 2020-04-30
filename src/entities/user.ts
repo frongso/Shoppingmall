@@ -1,6 +1,6 @@
-import { Entity, Column, BaseEntity, ManyToMany, JoinTable, ManyToOne } from 'typeorm';
+import { Entity, Column, BaseEntity, ManyToMany, JoinTable, ManyToOne, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
-// import { RoleMapUser } from './rsm_role_map_use';
+import { RoleMapUser } from './rsm_role_map_use';
 
 @Entity({
   name: 'msm_user',
@@ -51,10 +51,9 @@ export class User extends BaseEntity {
   })
   email: string;
 
-  // // Dose it work ?
-  // @ManyToOne(() => RoleMapUser, (userid) => userid.user)
-  // @JoinTable()
-  // classes: RoleMapUser[];
+  @OneToMany((type) => RoleMapUser, (rolemapuser) => rolemapuser.user)
+  @JoinTable()
+  rolemapuser: RoleMapUser;
 
   hashPassword() {
     this.password = bcrypt.hashSync(this.password, 8);

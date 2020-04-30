@@ -12,23 +12,13 @@ export class RoleMapUser extends BaseEntity {
   })
   rumid: number;
 
-  // @Column('bigint', {
-  //   name: 'MSM_USER_ID',
-  //   nullable: false,
-  // })
-  // userid: number;
-
-  @OneToOne((type) => User)
+  // มันจะรู้ได้ไงว่าเราเอาแค่ user id อย่างเดียว
+  @ManyToOne((type) => User, (user) => user.rolemapuser)
   @JoinColumn({ name: 'MSM_USER_ID' })
-  userid: number;
+  user: User;
 
-  // @Column('bigint', {
-  //   name: 'MSM_ROLE_ID',
-  //   nullable: false,
-  // })
-  // roleid: number;
-
-  @OneToOne((type) => Role)
+  // มันจะรู้ได้ไงว่าเราเอาแค่ role id อย่างเดียว
+  @ManyToOne((type) => Role, (role) => role.rolemapuser)
   @JoinColumn({ name: 'MSM_ROLE_ID' })
-  roleid: number;
+  role: Role;
 }
