@@ -1,16 +1,9 @@
+import { UpdateRoleModel } from './../../model/role.model';
 import { Role } from './../../entities/role';
 import { User } from './../../entities/user';
 import { RoleMapUser } from './../../entities/rsm_role_map_use';
 import { JsonController, Get, Post, Body, Delete, QueryParam, Res } from 'routing-controllers';
 import { Response } from 'express';
-import { ConnectionOptions, createConnection } from 'typeorm';
-// update delete select
-
-const options: ConnectionOptions = {
-  entities: [Role, User, RoleMapUser],
-};
-
-const connection = createConnection(options);
 
 @JsonController('/role')
 export class RoleController {
@@ -19,35 +12,36 @@ export class RoleController {
     return Role.find();
   }
 
-  // @Post('/add')
-  // generate(@Body() role: Role) {
-  //   return Role.save(role);
-  // }
+  @Get('/select')
+  async getselect(@QueryParam('id') roleid: number, @Res() response: Response) {
+    const rolemapuserselect = await RoleMapUser.find({
+      where: [{ role: roleid }],
+    });
+    return response.send(rolemapuserselect);
+  }
 
   @Post('/save')
   async save(@Body() role: Role, @Body() user: User) {
     Role.save(role);
-    RoleMapUser.save(role);
-    RoleMapUser.save(user);
+    const rolemapuser = new RoleMapUser();
+    rolemapuser.role = role;
+    rolemapuser.user = user;
+    RoleMapUser.save(rolemapuser);
   }
 
   @Delete('/delete')
-  delete(@QueryParam('id') roleid: number, @Res() response: Response) {
+  async delete(@QueryParam('id') roleid: number, @Res() response: Response) {
     Role.delete(roleid);
+    const rolemapuserDel = await RoleMapUser.find({
+      where: [{ role: roleid }],
+    });
+    RoleMapUser.remove(rolemapuserDel);
     return response.sendStatus(200);
   }
 
   @Post('/update')
-  update() {
-    return;
-  }
-
-  // เอา sql มาจากไหน
-  // เอา queryparam ใส่ไปใน ข้อความเลือก sql ยังไง
-  @Post('select')
-  select(@QueryParam('id') roleid: number, @Res() response: Response) {
-    sql.query('SELECT * FROM shopping_mall.rsm_role_map_user WHERE MSM_ROLE_ID = {id};', (err, rows) => {
-      response.send(rows);
-    });
+  update(@Body() updaterolemodel: UpdateRoleModel) {
+    Role.update({ id: updaterolemodel.roleid }, updaterolemodel.role);
+    RoleMapUser.update({ role: updaterolemodel.role }, updaterolemodel.users);
   }
 }

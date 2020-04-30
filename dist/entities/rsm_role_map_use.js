@@ -24,12 +24,12 @@ __decorate([
     __metadata("design:type", Number)
 ], RoleMapUser.prototype, "rumid", void 0);
 __decorate([
-    typeorm_1.ManyToOne((type) => user_1.User, (user) => user.id),
+    typeorm_1.ManyToOne((type) => user_1.User, (user) => user.rolemapuser),
     typeorm_1.JoinColumn({ name: 'MSM_USER_ID' }),
     __metadata("design:type", user_1.User)
 ], RoleMapUser.prototype, "user", void 0);
 __decorate([
-    typeorm_1.ManyToOne((type) => role_1.Role, (role) => role.id),
+    typeorm_1.ManyToOne((type) => role_1.Role, (role) => role.rolemapuser),
     typeorm_1.JoinColumn({ name: 'MSM_ROLE_ID' }),
     __metadata("design:type", role_1.Role)
 ], RoleMapUser.prototype, "role", void 0);
