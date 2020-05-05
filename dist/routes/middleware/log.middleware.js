@@ -10,7 +10,6 @@ const routing_controllers_1 = require("routing-controllers");
 let LogMiddleware = class LogMiddleware {
     use(request, response, next) {
         // tslint:disable-next-line:no-console
-        console.log(request);
         return next();
     }
 };

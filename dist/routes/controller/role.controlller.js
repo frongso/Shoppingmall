@@ -21,9 +21,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const role_model_1 = require("./../../model/role.model");
+const role_save_model_1 = require("./../../model/role.save.model");
+const role_update_model_1 = require("../../model/role.update.model");
 const role_1 = require("./../../entities/role");
-const user_1 = require("./../../entities/user");
 const rsm_role_map_use_1 = require("./../../entities/rsm_role_map_use");
 const routing_controllers_1 = require("routing-controllers");
 let RoleController = class RoleController {
@@ -38,12 +38,12 @@ let RoleController = class RoleController {
             return response.send(rolemapuserselect);
         });
     }
-    save(role, user) {
+    save(saverolemodel) {
         return __awaiter(this, void 0, void 0, function* () {
-            role_1.Role.save(role);
+            role_1.Role.save(saverolemodel.role);
             const rolemapuser = new rsm_role_map_use_1.RoleMapUser();
-            rolemapuser.role = role;
-            rolemapuser.user = user;
+            rolemapuser.role = saverolemodel.role;
+            rolemapuser.user = saverolemodel.user;
             rsm_role_map_use_1.RoleMapUser.save(rolemapuser);
         });
     }
@@ -58,10 +58,8 @@ let RoleController = class RoleController {
         });
     }
     update(updaterolemodel) {
-        return __awaiter(this, void 0, void 0, function* () {
-            role_1.Role.update({ id: updaterolemodel.roleid }, updaterolemodel.role);
-            rsm_role_map_use_1.RoleMapUser.update({ role: updaterolemodel.role }, updaterolemodel.users);
-        });
+        role_1.Role.update({ id: updaterolemodel.roleid }, updaterolemodel.role);
+        rsm_role_map_use_1.RoleMapUser.update({ role: updaterolemodel.role }, updaterolemodel.users);
     }
 };
 __decorate([
@@ -79,9 +77,9 @@ __decorate([
 ], RoleController.prototype, "getselect", null);
 __decorate([
     routing_controllers_1.Post('/save'),
-    __param(0, routing_controllers_1.Body()), __param(1, routing_controllers_1.Body()),
+    __param(0, routing_controllers_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [role_1.Role, user_1.User]),
+    __metadata("design:paramtypes", [role_save_model_1.SaveRoleModel]),
     __metadata("design:returntype", Promise)
 ], RoleController.prototype, "save", null);
 __decorate([
@@ -95,8 +93,8 @@ __decorate([
     routing_controllers_1.Post('/update'),
     __param(0, routing_controllers_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [role_model_1.UpdateRoleModel]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:paramtypes", [role_update_model_1.UpdateRoleModel]),
+    __metadata("design:returntype", void 0)
 ], RoleController.prototype, "update", null);
 RoleController = __decorate([
     routing_controllers_1.JsonController('/role')

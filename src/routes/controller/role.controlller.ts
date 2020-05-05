@@ -1,12 +1,13 @@
-import { UpdateRoleModel } from './../../model/role.model';
+import { SaveRoleModel } from './../../model/role.save.model';
+import { UpdateRoleModel } from '../../model/role.update.model';
 import { Role } from './../../entities/role';
-import { User } from './../../entities/user';
 import { RoleMapUser } from './../../entities/rsm_role_map_use';
 import { JsonController, Get, Post, Body, Delete, QueryParam, Res } from 'routing-controllers';
 import { Response } from 'express';
 
 @JsonController('/role')
 export class RoleController {
+  // check
   @Get('/')
   getall() {
     return Role.find();
@@ -20,15 +21,17 @@ export class RoleController {
     return response.send(rolemapuserselect);
   }
 
+  // Cant get save
   @Post('/save')
-  async save(@Body() role: Role, @Body() user: User) {
-    Role.save(role);
+  async save(@Body() saverolemodel: SaveRoleModel) {
+    Role.save(saverolemodel.role);
     const rolemapuser = new RoleMapUser();
-    rolemapuser.role = role;
-    rolemapuser.user = user;
+    rolemapuser.role = saverolemodel.role;
+    rolemapuser.user = saverolemodel.user;
     RoleMapUser.save(rolemapuser);
   }
 
+  // Cant get delete
   @Delete('/delete')
   async delete(@QueryParam('id') roleid: number, @Res() response: Response) {
     Role.delete(roleid);

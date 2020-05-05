@@ -18,6 +18,7 @@ __decorate([
         name: 'MSM_ROLE_ID',
         primary: true,
         nullable: false,
+        generated: true,
         width: 22,
     }),
     __metadata("design:type", Number)

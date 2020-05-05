@@ -1,11 +1,11 @@
-import { UpdateRoleModel } from './../../model/role.model';
+import { SaveRoleModel } from './../../model/role.save.model';
+import { UpdateRoleModel } from '../../model/role.update.model';
 import { Role } from './../../entities/role';
-import { User } from './../../entities/user';
 import { Response } from 'express';
 export declare class RoleController {
     getall(): Promise<Role[]>;
     getselect(roleid: number, response: Response): Promise<Response<any>>;
-    save(role: Role, user: User): Promise<void>;
+    save(saverolemodel: SaveRoleModel): Promise<void>;
     delete(roleid: number, response: Response): Promise<Response<any>>;
-    update(updaterolemodel: UpdateRoleModel): Promise<void>;
+    update(updaterolemodel: UpdateRoleModel): void;
 }
