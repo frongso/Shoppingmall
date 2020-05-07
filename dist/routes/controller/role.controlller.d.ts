@@ -7,5 +7,5 @@ export declare class RoleController {
     getselect(roleid: number, response: Response): Promise<Response<any>>;
     save(saverolemodel: SaveRoleModel): Promise<void>;
     delete(roleid: number, response: Response): Promise<Response<any>>;
-    update(updaterolemodel: UpdateRoleModel): void;
+    update(updaterolemodel: UpdateRoleModel): Promise<void>;
 }

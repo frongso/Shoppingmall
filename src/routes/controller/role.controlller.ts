@@ -4,6 +4,8 @@ import { Role } from './../../entities/role';
 import { RoleMapUser } from './../../entities/rsm_role_map_use';
 import { JsonController, Get, Post, Body, Delete, QueryParam, Res } from 'routing-controllers';
 import { Response } from 'express';
+import { IsPassportNumber } from 'class-validator';
+import { User } from '../../entities/user';
 
 @JsonController('/role')
 export class RoleController {
@@ -21,7 +23,6 @@ export class RoleController {
     return response.send(rolemapuserselect);
   }
 
-  // Cant get save
   @Post('/save')
   async save(@Body() saverolemodel: SaveRoleModel) {
     Role.save(saverolemodel.role);
@@ -31,20 +32,58 @@ export class RoleController {
     rolemapuser.save();
   }
 
-  // Cant get delete
   @Delete('/delete')
   async delete(@QueryParam('id') roleid: number, @Res() response: Response) {
-    Role.delete(roleid);
     const rolemapuserDel = await RoleMapUser.find({
       where: [{ role: roleid }],
     });
     RoleMapUser.remove(rolemapuserDel);
+    Role.delete(roleid);
     return response.sendStatus(200);
   }
 
   @Post('/update')
-  update(@Body() updaterolemodel: UpdateRoleModel) {
-    Role.update({ id: updaterolemodel.roleid }, updaterolemodel.role);
-    RoleMapUser.update({ role: updaterolemodel.role }, updaterolemodel.users);
+  async update(@Body() updaterolemodel: UpdateRoleModel) {
+    const roleId = updaterolemodel.roleId;
+    const roleName = updaterolemodel.roleName;
+    const updateUsers = updaterolemodel.users;
+
+    // Update role name
+    // Get role from database using id
+    const updateRoles = await Role.findOne({
+      where: [{ id: roleId }],
+    });
+    updateRoles.name = roleName;
+    updateRoles.save();
+
+    // Update rolemapuser.user
+    // Get Unupdate user[]
+    const oldRoleMapUsers = await RoleMapUser.find({
+      where: [{ role: roleId }],
+    });
+    // Unupdate user in arr
+    const oldRoleMapUsersArr = [];
+    oldRoleMapUsers.forEach((oldRoleMapUser) => {
+      oldRoleMapUsersArr.push(oldRoleMapUser.user.id);
+    });
+
+    // Delete old user that not have in update
+    oldRoleMapUsersArr.forEach((oldRoleMapUser) => {
+      if (!(oldRoleMapUser in updateUsers)) {
+        RoleMapUser.remove(oldRoleMapUser);
+      }
+    });
+    // Add user in update in to database
+    updateUsers.forEach(async (updateUser) => {
+      if (!(updateUser in oldRoleMapUsersArr)) {
+        const updaterolemapuser = new RoleMapUser();
+        updaterolemapuser.role = updateRoles;
+        // Get user from userid in update
+        const getUser = await User.findOne({
+          where: [{ id: updateUser }],
+        });
+        updaterolemapuser.user = getUser;
+      }
+    });
   }
 }

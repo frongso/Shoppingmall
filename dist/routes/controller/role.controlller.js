@@ -26,6 +26,7 @@ const role_update_model_1 = require("../../model/role.update.model");
 const role_1 = require("./../../entities/role");
 const rsm_role_map_use_1 = require("./../../entities/rsm_role_map_use");
 const routing_controllers_1 = require("routing-controllers");
+const user_1 = require("../../entities/user");
 let RoleController = class RoleController {
     // check
     getall() {
@@ -39,7 +40,6 @@ let RoleController = class RoleController {
             return response.send(rolemapuserselect);
         });
     }
-    // Cant get save
     save(saverolemodel) {
         return __awaiter(this, void 0, void 0, function* () {
             role_1.Role.save(saverolemodel.role);
@@ -49,20 +49,57 @@ let RoleController = class RoleController {
             rolemapuser.save();
         });
     }
-    // Cant get delete
     delete(roleid, response) {
         return __awaiter(this, void 0, void 0, function* () {
-            role_1.Role.delete(roleid);
             const rolemapuserDel = yield rsm_role_map_use_1.RoleMapUser.find({
                 where: [{ role: roleid }],
             });
             rsm_role_map_use_1.RoleMapUser.remove(rolemapuserDel);
+            role_1.Role.delete(roleid);
             return response.sendStatus(200);
         });
     }
     update(updaterolemodel) {
-        role_1.Role.update({ id: updaterolemodel.roleid }, updaterolemodel.role);
-        rsm_role_map_use_1.RoleMapUser.update({ role: updaterolemodel.role }, updaterolemodel.users);
+        return __awaiter(this, void 0, void 0, function* () {
+            const roleId = updaterolemodel.roleId;
+            const roleName = updaterolemodel.roleName;
+            const updateUsers = updaterolemodel.users;
+            // Update role name
+            // Get role from database using id
+            const updateRoles = yield role_1.Role.findOne({
+                where: [{ id: roleId }],
+            });
+            updateRoles.name = roleName;
+            updateRoles.save();
+            // Update rolemapuser.user
+            // Get Unupdate user[]
+            const oldRoleMapUsers = yield rsm_role_map_use_1.RoleMapUser.find({
+                where: [{ role: roleId }],
+            });
+            // Unupdate user in arr
+            const oldRoleMapUsersArr = [];
+            oldRoleMapUsers.forEach((oldRoleMapUser) => {
+                oldRoleMapUsersArr.push(oldRoleMapUser.user.id);
+            });
+            // Delete old user that not have in update
+            oldRoleMapUsersArr.forEach((oldRoleMapUser) => {
+                if (!(oldRoleMapUser in updateUsers)) {
+                    rsm_role_map_use_1.RoleMapUser.remove(oldRoleMapUser);
+                }
+            });
+            // Add user in update in to database
+            updateUsers.forEach((updateUser) => __awaiter(this, void 0, void 0, function* () {
+                if (!(updateUser in oldRoleMapUsersArr)) {
+                    const updaterolemapuser = new rsm_role_map_use_1.RoleMapUser();
+                    updaterolemapuser.role = updateRoles;
+                    // Get user from userid in update
+                    const getUser = yield user_1.User.findOne({
+                        where: [{ id: updateUser }],
+                    });
+                    updaterolemapuser.user = getUser;
+                }
+            }));
+        });
     }
 };
 __decorate([
@@ -97,7 +134,7 @@ __decorate([
     __param(0, routing_controllers_1.Body()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [role_update_model_1.UpdateRoleModel]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], RoleController.prototype, "update", null);
 RoleController = __decorate([
     routing_controllers_1.JsonController('/role')
