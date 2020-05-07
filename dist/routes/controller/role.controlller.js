@@ -97,6 +97,7 @@ let RoleController = class RoleController {
                         where: [{ id: updateUser }],
                     });
                     updaterolemapuser.user = getUser;
+                    updaterolemapuser.save();
                 }
             }));
         });

@@ -4,7 +4,6 @@ import { Role } from './../../entities/role';
 import { RoleMapUser } from './../../entities/rsm_role_map_use';
 import { JsonController, Get, Post, Body, Delete, QueryParam, Res } from 'routing-controllers';
 import { Response } from 'express';
-import { IsPassportNumber } from 'class-validator';
 import { User } from '../../entities/user';
 
 @JsonController('/role')
@@ -83,6 +82,7 @@ export class RoleController {
           where: [{ id: updateUser }],
         });
         updaterolemapuser.user = getUser;
+        updaterolemapuser.save();
       }
     });
   }
