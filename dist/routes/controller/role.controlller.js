@@ -27,6 +27,7 @@ const role_1 = require("./../../entities/role");
 const rsm_role_map_use_1 = require("./../../entities/rsm_role_map_use");
 const routing_controllers_1 = require("routing-controllers");
 let RoleController = class RoleController {
+    // check
     getall() {
         return role_1.Role.find();
     }
@@ -38,15 +39,17 @@ let RoleController = class RoleController {
             return response.send(rolemapuserselect);
         });
     }
+    // Cant get save
     save(saverolemodel) {
         return __awaiter(this, void 0, void 0, function* () {
             role_1.Role.save(saverolemodel.role);
             const rolemapuser = new rsm_role_map_use_1.RoleMapUser();
             rolemapuser.role = saverolemodel.role;
             rolemapuser.user = saverolemodel.user;
-            rsm_role_map_use_1.RoleMapUser.save(rolemapuser);
+            rolemapuser.save();
         });
     }
+    // Cant get delete
     delete(roleid, response) {
         return __awaiter(this, void 0, void 0, function* () {
             role_1.Role.delete(roleid);

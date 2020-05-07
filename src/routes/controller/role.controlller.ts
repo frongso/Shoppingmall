@@ -28,7 +28,7 @@ export class RoleController {
     const rolemapuser = new RoleMapUser();
     rolemapuser.role = saverolemodel.role;
     rolemapuser.user = saverolemodel.user;
-    RoleMapUser.save(rolemapuser);
+    rolemapuser.save();
   }
 
   // Cant get delete

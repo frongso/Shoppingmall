@@ -18,7 +18,7 @@ __decorate([
     typeorm_1.Column('bigint', {
         primary: true,
         name: 'RSM_RMU_ID',
-        nullable: false,
+        generated: true,
         width: 22,
     }),
     __metadata("design:type", Number)

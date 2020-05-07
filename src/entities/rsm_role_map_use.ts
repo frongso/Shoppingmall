@@ -7,7 +7,7 @@ export class RoleMapUser extends BaseEntity {
   @Column('bigint', {
     primary: true,
     name: 'RSM_RMU_ID',
-    nullable: false,
+    generated: true,
     width: 22,
   })
   rumid: number;
