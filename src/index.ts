@@ -12,7 +12,7 @@ createConnection()
   .then((connection) => {
     const app = createExpressServer({
       controllers: [TestController, UserController, RoleController, SecurityController],
-      middlewares: [LogMiddleware, CheckJwtMiddleware],
+      // middlewares: [LogMiddleware, CheckJwtMiddleware],
       routePrefix: '/service',
     });
 

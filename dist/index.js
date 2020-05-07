@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const log_middleware_1 = require("./routes/middleware/log.middleware");
 const user_controller_1 = require("./routes/controller/user.controller");
 const body_parser_1 = __importDefault(require("body-parser"));
 const routing_controllers_1 = require("routing-controllers");
@@ -12,12 +11,11 @@ const typeorm_1 = require("typeorm");
 const role_controlller_1 = require("./routes/controller/role.controlller");
 const server_1 = require("./config/server");
 const security_controller_1 = require("./routes/security/security.controller");
-const checkJwt_middleware_1 = require("./routes/middleware/checkJwt.middleware");
 typeorm_1.createConnection()
     .then((connection) => {
     const app = routing_controllers_1.createExpressServer({
         controllers: [test_controller_1.TestController, user_controller_1.UserController, role_controlller_1.RoleController, security_controller_1.SecurityController],
-        middlewares: [log_middleware_1.LogMiddleware, checkJwt_middleware_1.CheckJwtMiddleware],
+        // middlewares: [LogMiddleware, CheckJwtMiddleware],
         routePrefix: '/service',
     });
     app.use(body_parser_1.default.urlencoded({ extended: true }));

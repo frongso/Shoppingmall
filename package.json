@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run format && tsc",
     "format": "prettier --write \"src/**/*.ts\"",
-    "start": "npm run build && node dist/index"
+    "start": " ts-node-dev --respawn --transpileOnly --cls ./src/index.ts"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +19,7 @@
     "class-validator": "^0.12.2",
     "prettier": "^2.0.5",
     "routing-controllers": "^0.8.1",
+    "ts-node-dev": "^1.0.0-pre.44",
     "tslint": "^6.1.1",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.8.3"

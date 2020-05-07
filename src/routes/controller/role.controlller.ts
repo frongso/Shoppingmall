@@ -8,7 +8,6 @@ import { User } from '../../entities/user';
 
 @JsonController('/role')
 export class RoleController {
-  // check
   @Get('/')
   getall() {
     return Role.find();
@@ -17,7 +16,7 @@ export class RoleController {
   @Get('/select')
   async getselect(@QueryParam('id') roleid: number, @Res() response: Response) {
     const rolemapuserselect = await RoleMapUser.find({
-      where: [{ role: roleid }],
+      where: { role: roleid },
     });
     return response.send(rolemapuserselect);
   }
@@ -34,7 +33,7 @@ export class RoleController {
   @Delete('/delete')
   async delete(@QueryParam('id') roleid: number, @Res() response: Response) {
     const rolemapuserDel = await RoleMapUser.find({
-      where: [{ role: roleid }],
+      where: { role: roleid },
     });
     RoleMapUser.remove(rolemapuserDel);
     Role.delete(roleid);
@@ -50,7 +49,7 @@ export class RoleController {
     // Update role name
     // Get role from database using id
     const updateRoles = await Role.findOne({
-      where: [{ id: roleId }],
+      where: { id: roleId },
     });
     updateRoles.name = roleName;
     updateRoles.save();
@@ -58,32 +57,32 @@ export class RoleController {
     // Update rolemapuser.user
     // Get Unupdate user[]
     const oldRoleMapUsers = await RoleMapUser.find({
-      where: [{ role: roleId }],
+      where: { role: roleId },
+      relations: ['user'],
     });
-    // Unupdate user in arr
-    const oldRoleMapUsersArr = [];
-    oldRoleMapUsers.forEach((oldRoleMapUser) => {
-      oldRoleMapUsersArr.push(oldRoleMapUser.user.id);
-    });
+
+    // ??
+    const oldRoleMapUsersArr = oldRoleMapUsers.user;
 
     // Delete old user that not have in update
     oldRoleMapUsersArr.forEach((oldRoleMapUser) => {
-      if (!(oldRoleMapUser in updateUsers)) {
-        RoleMapUser.remove(oldRoleMapUser);
+      if (!updateUsers.includes(oldRoleMapUser)) {
+        RoleMapUser.remove(oldRoleMapUsers);
       }
     });
     // Add user in update in to database
     updateUsers.forEach(async (updateUser) => {
-      if (!(updateUser in oldRoleMapUsersArr)) {
+      if (!oldRoleMapUsersArr.includes(updateUser)) {
         const updaterolemapuser = new RoleMapUser();
         updaterolemapuser.role = updateRoles;
         // Get user from userid in update
         const getUser = await User.findOne({
-          where: [{ id: updateUser }],
+          where: { id: updateUser },
         });
         updaterolemapuser.user = getUser;
         updaterolemapuser.save();
       }
     });
+    return 'ddcdwc';
   }
 }

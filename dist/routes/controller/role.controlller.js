@@ -35,7 +35,7 @@ let RoleController = class RoleController {
     getselect(roleid, response) {
         return __awaiter(this, void 0, void 0, function* () {
             const rolemapuserselect = yield rsm_role_map_use_1.RoleMapUser.find({
-                where: [{ role: roleid }],
+                where: { role: roleid },
             });
             return response.send(rolemapuserselect);
         });
@@ -52,7 +52,7 @@ let RoleController = class RoleController {
     delete(roleid, response) {
         return __awaiter(this, void 0, void 0, function* () {
             const rolemapuserDel = yield rsm_role_map_use_1.RoleMapUser.find({
-                where: [{ role: roleid }],
+                where: { role: roleid },
             });
             rsm_role_map_use_1.RoleMapUser.remove(rolemapuserDel);
             role_1.Role.delete(roleid);
@@ -67,14 +67,14 @@ let RoleController = class RoleController {
             // Update role name
             // Get role from database using id
             const updateRoles = yield role_1.Role.findOne({
-                where: [{ id: roleId }],
+                where: { id: roleId },
             });
             updateRoles.name = roleName;
             updateRoles.save();
             // Update rolemapuser.user
             // Get Unupdate user[]
             const oldRoleMapUsers = yield rsm_role_map_use_1.RoleMapUser.find({
-                where: [{ role: roleId }],
+                where: { role: roleId },
             });
             // Unupdate user in arr
             const oldRoleMapUsersArr = [];
@@ -94,7 +94,7 @@ let RoleController = class RoleController {
                     updaterolemapuser.role = updateRoles;
                     // Get user from userid in update
                     const getUser = yield user_1.User.findOne({
-                        where: [{ id: updateUser }],
+                        where: { id: updateUser },
                     });
                     updaterolemapuser.user = getUser;
                     updaterolemapuser.save();
