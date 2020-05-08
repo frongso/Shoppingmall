@@ -60,16 +60,22 @@ export class RoleController {
       where: { role: roleId },
       relations: ['user'],
     });
-
-    // ??
-    const oldRoleMapUsersArr = oldRoleMapUsers.user;
+    // Unupdate user in arr
+    const oldRoleMapUsersArr = [];
+    oldRoleMapUsers.forEach((oldRoleMapUser) => {
+      oldRoleMapUsersArr.push(oldRoleMapUser.user.id);
+    });
 
     // Delete old user that not have in update
-    oldRoleMapUsersArr.forEach((oldRoleMapUser) => {
+    oldRoleMapUsersArr.forEach(async (oldRoleMapUser) => {
       if (!updateUsers.includes(oldRoleMapUser)) {
-        RoleMapUser.remove(oldRoleMapUsers);
+        const deleteRoleMapUser = await RoleMapUser.find({
+          where: { user: oldRoleMapUser },
+        });
+        RoleMapUser.remove(deleteRoleMapUser);
       }
     });
+
     // Add user in update in to database
     updateUsers.forEach(async (updateUser) => {
       if (!oldRoleMapUsersArr.includes(updateUser)) {
