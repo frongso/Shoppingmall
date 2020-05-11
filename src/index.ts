@@ -8,10 +8,11 @@ import { RoleController } from './routes/controller/role.controlller';
 import { port } from './config/server';
 import { SecurityController } from './routes/security/security.controller';
 import { CheckJwtMiddleware } from './routes/middleware/checkJwt.middleware';
+import { ListController } from './routes/controller/list.controlller';
 createConnection()
   .then((connection) => {
     const app = createExpressServer({
-      controllers: [TestController, UserController, RoleController, SecurityController],
+      controllers: [TestController, UserController, RoleController, SecurityController, ListController],
       // middlewares: [LogMiddleware, CheckJwtMiddleware],
       routePrefix: '/service',
     });
