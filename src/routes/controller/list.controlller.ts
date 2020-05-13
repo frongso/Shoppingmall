@@ -1,47 +1,35 @@
-import { Controller, Get, JsonController } from 'routing-controllers';
+import { Controller, Get, JsonController, Body } from 'routing-controllers';
+import { compute, maximumSum } from '../service/list.service';
 
 @JsonController('/list')
 export class ListController {
-  @Get('/')
-  compute() {
-    const set1 = new Set();
-    const set2 = new Set();
-    const buffer = [];
+  @Get('/2list')
+  compute2list() {
+    return compute();
+  }
 
-    let i = 0;
-    for (; i < 100000; i++) {
-      set1.add(Math.floor(Math.random() * 100000) + 1);
-      set2.add(Math.floor(Math.random() * 1000000) + 1);
-    }
-    let j = 0;
-    for (; j < 900000; j++) {
-      set2.add(Math.floor(Math.random() * 1000000) + 1);
-    }
+  @Get('/maximum')
+  findmax() {
+    const n1 = 4;
+    const matrix1 = [
+      [0, -2, -7, 0],
+      [10, 3, -6, 2],
+      [-4, 1, -4, 1],
+      [-1, 8, 0, 2],
+    ];
 
-    // method 1
-    // 1.30 min
-    // list2.forEach((numberTarget) => {
-    //   if (!buffer.includes(numberTarget)) {
-    //     let v = 0;
-    //     for (; v < list1.length; v++) {
-    //       if (list1[v] === numberTarget) {
-    //         buffer.push(numberTarget);
-    //         list1.splice(v, 1);
-    //         break;
-    //       }
-    //     }
-    //   }
-    // });
+    const n2 = 2;
+    const matrix2 = [
+      [-2, -3],
+      [-1, -5],
+    ];
 
-    // method 2
-    set1.forEach((numberTarget) => {
-      if (set2.has(numberTarget)) {
-        buffer.push(numberTarget);
-      }
-    });
-
-    const result = buffer.length;
-
-    return { result, buffer };
+    const n3 = 3;
+    const matrix3 = [
+      [1, 6, -2],
+      [-2, -2, -3],
+      [-2, -2, 7],
+    ];
+    return maximumSum(n1, matrix1);
   }
 }
